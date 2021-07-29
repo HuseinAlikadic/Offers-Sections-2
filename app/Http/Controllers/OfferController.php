@@ -64,10 +64,11 @@ class OfferController extends Controller
 
     public function delete_offer(Request $request)
     {
+      
         $deleteId=$request->id;
 
         Offer::where('id',$deleteId)->delete();
-        
+    
         return redirect('offer');
     }
 }

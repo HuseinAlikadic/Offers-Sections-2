@@ -132,7 +132,7 @@
                     <h4 class="modal-title">Edit Offer</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="edit-offer" method="POST">
+                <form action="api/edit-offer" method="POST">
                     @csrf
                     <!-- Modal body -->
                     <div class="modal-body">
@@ -217,8 +217,9 @@
                     <h4 class="modal-title">Delete Offer</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="delete-offer" method="POST">
+                <form action="{{route('deleteOffer')}}" method="POST">
                     @csrf
+                    <input type="hidden" name="_method" value="DELETE">
                     <!-- Modal body -->
                     <div class="modal-body">
                         <input type="hidden" name="id" :value="deleteOfferId">
@@ -260,6 +261,7 @@ const app = new Vue({
         },
         deleteOffer: function(index) {
             this.deleteOfferId = this.offer[index].offerId;
+            console.log(this.deleteOfferId);
             this.deleteOfferName = this.offer[index].title;
             $('#deleteOffer').modal('toggle');
         }

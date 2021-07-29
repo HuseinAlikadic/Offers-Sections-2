@@ -15,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
+    // dd($request);
     return $request->user();
 });
+Route::post('/edit-offer', [App\Http\Controllers\OfferController::class, 'edit_offer'])->name('editOffer');
+Route::delete('/delete-offer', [App\Http\Controllers\OfferController::class, 'delete_offer'])->name('deleteOffer');
