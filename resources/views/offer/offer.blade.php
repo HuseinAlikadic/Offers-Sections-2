@@ -3,14 +3,36 @@
 @section('content')
 <div class="container">
     @if (session('success'))
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success sakriPoruku" role="alert">
         {{ session('success') }}
     </div>
     @endif
+    <div>
+     
+        <div class="input-group mb-3">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                v-model="pretrazi" 
+            />
+            <div class="input-group-append">
+                <button class="btn btn-success"  @click="searchOfferByTitle()" >
+                    Search
+                </button>
+            </div>
+        </div> 
+    </div>
+   
+
+  
     <p> Display data for offers</p>
     <button v-show="isAdmin=='1'" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addOffer">Add
         Offer</button>
-    <table class="table table-striped">
+        <br>
+        <br>
+        <div v-show="spinner==true" class="spinner-border text-primary"></div>
+    <table v-show="spinner==false" class="table table-striped">
         <thead>
             <tr>
                 <th>Title</th>
@@ -38,7 +60,8 @@
                 <td>@{{item.sectionNama}}</td>
                 <td>@{{item.image}}</td>
                 <td><i class="fas fa-edit" @click="editOffer(index)"></i></td>
-                <td><i v-show="isAdmin=='1'" class="fas fa-trash-alt" @click="deleteOffer(index)"></i></td>
+                <td><i v-show="isAdmin=='1'||item.authorId==isCreateOffer" class="fas fa-trash-alt"
+                        @click="deleteOffer(index)"></i></td>
             </tr>
 
         </tbody>
@@ -54,7 +77,7 @@
                     <h4 class="modal-title">Add Offer</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="add-offer" method="POST">
+                <form action="api/add-offer" method="POST" >
                     @csrf
                     <!-- Modal body -->
                     <div class="modal-body">
@@ -62,10 +85,7 @@
                             <label for="usr">Title:</label>
                             <input type="text" class="form-control" name="title" required>
                         </div>
-                        <div class="form-group">
-                            <label for="usr">Slug:</label>
-                            <input type="text" class="form-control" name="slug" required>
-                        </div>
+                       
                         <div class="form-group">
                             <label for="usr">Published at:</label>
                             <input type="date" class="form-control" name="published_at" required>
@@ -107,8 +127,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="usr">Image:</label>
-                            <input type="text" class="form-control" name="image" required>
+                            <input type="file" class="form-control" name="image" required>
                         </div>
                     </div>
 
@@ -142,10 +161,7 @@
                             <input type="text" class="form-control" v-model="editOfferArray.title" name="title"
                                 required>
                         </div>
-                        <div class="form-group">
-                            <label for="usr">Slug:</label>
-                            <input type="text" class="form-control" v-model="editOfferArray.slug" name="slug" required>
-                        </div>
+                        
                         <div class="form-group">
                             <label for="usr">Published at:</label>
                             <input type="datetime" class="form-control" v-model="editOfferArray.published_at"
@@ -251,7 +267,12 @@ const app = new Vue({
             isAdmin: <?=$isAdmin?>,
             editOfferArray: [],
             deleteOfferId: null,
-            deleteOfferName: null
+            deleteOfferName: null,
+            isCreateOffer: <?=$isCreateOffer?>,
+            pretrazi:null,
+            spinner:false
+
+        
         }
     },
     methods: {
@@ -264,7 +285,27 @@ const app = new Vue({
             console.log(this.deleteOfferId);
             this.deleteOfferName = this.offer[index].title;
             $('#deleteOffer').modal('toggle');
+        },
+        searchOfferByTitle:function(){
+           this.spinner=true;
+            axios.get('/api/search-offer',{ params:{
+                rezultat: this.pretrazi,
+                mojaVar: 'ggggg'
+            }})
+                .then((response)=> {
+                    
+                    this.offer = response.data;
+                    this.spinner=false
+                }
+            )
         }
+
+
+    },
+    mounted() {
+        setTimeout(function() {
+            $('.sakriPoruku').hide();
+        }, 1000);
 
     },
 

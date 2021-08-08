@@ -30,6 +30,12 @@ class DatabaseSeeder extends Seeder
             'email'=>'emina_988@hotmail.com',
             'email_verified_at'=>Carbon::now(),
             'password'=>Hash::make(12345678),
+        ],
+        ['name'=>'Eminaa',
+            'is_admin'=>0,
+            'email'=>'emina_983338@hotmail.com',
+            'email_verified_at'=>Carbon::now(),
+            'password'=>Hash::make(12345678),
         ]
         ]);
         Section::insert([
@@ -49,6 +55,17 @@ class DatabaseSeeder extends Seeder
         'introduction'=>'uvod u ',
         'description'=>'opis ',
         'author_id'=>1,
+        'section_id'=>1,
+        'image'=>'slika'],
+
+        ['title'=>'husein naslov',
+        'slug'=>'jijii',
+        'published_at'=>Carbon::now(),
+        'unpublished_at'=>null,
+        'published'=>0,
+        'introduction'=>'uvod u ',
+        'description'=>'opis ',
+        'author_id'=>3,
         'section_id'=>1,
         'image'=>'slika']
         ]);

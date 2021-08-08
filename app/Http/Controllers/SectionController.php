@@ -18,4 +18,9 @@ class SectionController extends Controller
        
         return view('section/section')->with($myArray);
     }
+// vjezba za postmen
+    public function addSection()
+    {
+        return ["Result"=>"Dodao si sekciju"];
+    }
 }
