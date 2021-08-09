@@ -66,16 +66,28 @@ class OfferController extends Controller
             'description'=>'required',
             'author_id'=>'required',
             'section_id'=>'required',
-            'image'=>'required',               
+            'image'=>'nullable',               
         ]);
         $slug= Str::slug($request->title , '-');
+        
+       
+        
+        if($request->image!==null){            
+            $imageNameOriginal=$request->image->getClientOriginalName();
+            $imageNameForOffer= time() . '-' . $imageNameOriginal;
+            $request->image->move(public_path('offerImages'),$imageNameForOffer);
+        }
 
         $idOffer=$request->id;
         $editOffer= Offer::find($idOffer);
         $editOffer->fill($validation);
-        $editOffer->slug=$slug;
+        $editOffer->slug=$slug;  
+
+        if($request->image!==null){     
+        $editOffer->image=$imageNameForOffer;
+        }
         $editOffer->save();
-       
+        
         return redirect('offer')->with('success','You have successfully edit a offer.');
     }
 

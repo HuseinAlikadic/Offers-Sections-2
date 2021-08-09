@@ -151,7 +151,7 @@
                     <h4 class="modal-title">Edit Offer</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="api/edit-offer" method="POST">
+                <form action="api/edit-offer" method="POST" enctype="multipart/form-data">
                     @csrf
                     <!-- Modal body -->
                     <div class="modal-body">
@@ -208,8 +208,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="usr">Image:</label>
-                            <input type="text" class="form-control" :value="editOfferArray.image" name="image" required>
+                            <input type="file" class="form-control" name="image">
                         </div>
                     </div>
 
