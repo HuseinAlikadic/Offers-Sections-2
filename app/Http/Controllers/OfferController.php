@@ -39,14 +39,20 @@ class OfferController extends Controller
             'description'=>'required',
             'author_id'=>'required',
             'section_id'=>'required',
-            'image'=>'required',               
+            'image'=>'required|mimes:jpg,png,jpeg|max:5048',               
         ]);
-     $slug= Str::slug($request->title , '-');
+        $slug= Str::slug($request->title , '-');
 
-       $addOffer= new Offer();
-       $addOffer->fill($validation);
-       $addOffer->slug=$slug; 
-       $addOffer->save();
+        $imageNameOriginal=$request->image->getClientOriginalName();
+        $imageNameForOffer= time() . '-' . $imageNameOriginal;
+        $request->image->move(public_path('offerImages'),$imageNameForOffer);
+
+
+        $addOffer= new Offer();
+        $addOffer->fill($validation);
+        $addOffer->slug=$slug; 
+        $addOffer->image=$imageNameForOffer;
+        $addOffer->save();
         return redirect('offer')->with('success','You have successfully added a new offer.');
     }
 
@@ -84,7 +90,14 @@ class OfferController extends Controller
     public function search_offer_by_title()
     {
         $search=request()->get('rezultat');
-        $offer=Offer::where('title','LIKE', '%'. $search . '%')->get();
+        $offer=Offer::leftJoin('users','offers.author_id','=','users.id')
+        ->leftJoin('sections','offers.section_id','=','sections.id')
+        ->select('offers.id as offerId','offers.title','offers.slug','offers.published_at','offers.unpublished_at','offers.published',
+        'offers.introduction','offers.description','offers.image','users.name as author','offers.author_id as authorId','offers.section_id as sectionId','sections.name as sectionNama')
+        ->where('title','LIKE', '%'. $search . '%')
+        ->get();
+        
+       
        
         return $offer;     
     }

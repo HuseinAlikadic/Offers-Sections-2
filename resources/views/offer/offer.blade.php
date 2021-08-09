@@ -26,7 +26,7 @@
    
 
   
-    <p> Display data for offers</p>
+    <p > Display data for offers</p>
     <button v-show="isAdmin=='1'" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addOffer">Add
         Offer</button>
         <br>
@@ -50,7 +50,7 @@
         </thead>
         <tbody>
             <tr v-for="(item,index) in offer">
-                <td>@{{item.title}}</td>
+                <td class="pp">@{{item.title}}</td>
                 <td>@{{item.slug}}</td>
                 <td>@{{item.published_at}}</td>
                 <td> @{{item.published==0?'No':'Yes'}}</td>
@@ -58,7 +58,7 @@
                 <td>@{{item.description}}</td>
                 <td>@{{item.author}}</td>
                 <td>@{{item.sectionNama}}</td>
-                <td>@{{item.image}}</td>
+                <td >  <img :src="'{{ URL::to('/') }}/offerImages/' +item.image" class="rounded  resizeImgOffer" alt=" none sorce "></td>
                 <td><i class="fas fa-edit" @click="editOffer(index)"></i></td>
                 <td><i v-show="isAdmin=='1'||item.authorId==isCreateOffer" class="fas fa-trash-alt"
                         @click="deleteOffer(index)"></i></td>
@@ -77,7 +77,7 @@
                     <h4 class="modal-title">Add Offer</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="api/add-offer" method="POST" >
+                <form action="api/add-offer" method="POST" enctype="multipart/form-data">
                     @csrf
                     <!-- Modal body -->
                     <div class="modal-body">
