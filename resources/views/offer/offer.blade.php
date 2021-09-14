@@ -27,8 +27,10 @@
 
   
     <p > Display data for offers</p>
-    <button v-show="isAdmin=='1'" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addOffer">Add
+    @can('add offer')
+    <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#addOffer">Add
         Offer</button>
+    @endcan
         <br>
         <br>
         <div v-show="spinner==true" class="spinner-border text-primary"></div>
@@ -60,7 +62,7 @@
                 <td>@{{item.sectionNama}}</td>
                 <td >  <img :src="'{{ URL::to('/') }}/offerImages/' +item.image" class="rounded  resizeImgOffer" alt=" none sorce "></td>
                 <td><i class="fas fa-edit" @click="editOffer(index)"></i></td>
-                <td><i v-show="isAdmin=='1'||item.authorId==isCreateOffer" class="fas fa-trash-alt"
+                <td><i v-show="item.authorId==isCreateOffer" class="fas fa-trash-alt"
                         @click="deleteOffer(index)"></i></td>
             </tr>
 
@@ -263,7 +265,7 @@ const app = new Vue({
             offer: <?=$offer?>,
             section: <?=$section?>,
             user: <?=$user?>,
-            isAdmin: <?=$isAdmin?>,
+             
             editOfferArray: [],
             deleteOfferId: null,
             deleteOfferName: null,
@@ -287,12 +289,13 @@ const app = new Vue({
         },
         searchOfferByTitle:function(){
            this.spinner=true;
-            axios.get('/api/search-offer',{ params:{
-                rezultat: this.pretrazi,
-                mojaVar: 'ggggg'
-            }})
+          
+            axios.get('/api/search-offer',{ params:{          
+                rezultat: this.pretrazi,               
+                mojaVar: 'ggggg',
+              
+            }})         
                 .then((response)=> {
-                    
                     this.offer = response.data;
                     this.spinner=false
                 }

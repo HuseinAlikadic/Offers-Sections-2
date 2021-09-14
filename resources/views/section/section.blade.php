@@ -4,7 +4,7 @@
 <div class="container">
     <p>Section related data:</p>
     <br>
-    <button type="button" v-show="isAdmin=='1'" class="btn btn-primary" data-toggle="modal" data-target="#addSections">
+    <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#addSections">
         Add section
     </button>
     <br>
@@ -28,7 +28,7 @@
                 <td>@{{item.published}}</td>
                 <td>@{{item.is_on_front}}</td>
                 <td><i class="fas fa-edit" @click="editSection(index)"></i></td>
-                <td><i v-show="isAdmin=='1'" class="fas fa-trash-alt" @click="deleteSection(index)"></i></td>
+                <td><i class="fas fa-trash-alt" @click="deleteSection(index)"></i></td>
             </tr>
         </tbody>
     </table>
@@ -69,7 +69,7 @@ const app = new Vue({
     data() {
         return {
             section: <?=$section?>,
-            isAdmin: <?=$isAdmin?>,
+          
             deleteSectionName: null,
             deleteSectionId: null
         }

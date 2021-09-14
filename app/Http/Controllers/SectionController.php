@@ -14,7 +14,7 @@ class SectionController extends Controller
     {
         // dd(22);
         $myArray['section']=Section::get();
-        $myArray['isAdmin']=Auth::user()->is_admin;
+        // $myArray['isAdmin']=Auth::user()->is_admin;
        
         return view('section/section')->with($myArray);
     }

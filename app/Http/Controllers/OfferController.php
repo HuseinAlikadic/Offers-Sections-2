@@ -23,7 +23,7 @@ class OfferController extends Controller
         $myArray['section']=Section::get();
         $myArray['user']=User::get();
         // šalje 1 ili 0
-        $myArray['isAdmin']=Auth::user()->is_admin;
+        // $myArray['isAdmin']=Auth::user()->is_admin;
         $myArray['isCreateOffer']=Auth::user()->id;
         
         return view('offer/offer')->with($myArray);
@@ -72,22 +72,21 @@ class OfferController extends Controller
         
        
         
-        if($request->image!==null){            
+        if($request->image!==null){         
             $imageNameOriginal=$request->image->getClientOriginalName();
             $imageNameForOffer= time() . '-' . $imageNameOriginal;
             $request->image->move(public_path('offerImages'),$imageNameForOffer);
         }
-
         $idOffer=$request->id;
         $editOffer= Offer::find($idOffer);
         $editOffer->fill($validation);
         $editOffer->slug=$slug;  
 
-        if($request->image!==null){     
+        if($request->image!==null){  
         $editOffer->image=$imageNameForOffer;
         }
         $editOffer->save();
-        
+
         return redirect('offer')->with('success','You have successfully edit a offer.');
     }
 
@@ -108,8 +107,6 @@ class OfferController extends Controller
         'offers.introduction','offers.description','offers.image','users.name as author','offers.author_id as authorId','offers.section_id as sectionId','sections.name as sectionNama')
         ->where('title','LIKE', '%'. $search . '%')
         ->get();
-        
-       
        
         return $offer;     
     }
